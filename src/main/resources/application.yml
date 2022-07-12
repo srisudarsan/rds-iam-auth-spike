@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://rds-iam-auth-spike.cvfe9s0wvuzt.us-east-1.rds.amazonaws.com:5432/rds_iam_auth_spike
+    username: app_user
+  quartz:
+      job-store-type: jdbc
+      jdbc:
+        initialize-schema: always
+      properties:
+        org:
+          quartz:
+            dataSource:
+              quartzDataSource:
+                provider: hikaricp
+                driver: org.postgresql.Driver
+                URL: jdbc:postgresql://rds-iam-auth-spike.cvfe9s0wvuzt.us-east-1.rds.amazonaws.com:5432/rds_iam_auth_spike
+                user: migration_user
+            jobStore:
+              driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+              isClustered: true
+              dataSource: quartzDataSource
+              tablePrefix: qrtz_
+  flyway:
+#    url: jdbc:postgresql://rds-iam-auth-spike.cvfe9s0wvuzt.us-east-1.rds.amazonaws.com:5432/rds_iam_auth_spike
+#    user: migration_user
+    baseline-on-migrate: true
+    locations:
+      - classpath:db/migration
+    enabled: true
